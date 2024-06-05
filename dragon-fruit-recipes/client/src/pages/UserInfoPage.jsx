@@ -31,10 +31,10 @@ export default function UserInfoPage() {
     return (
         <>
         <div className="amUserInfo">
-            <div>Username: {userData.userName}</div>
-            <div>Email: {userData.email}</div>
-            <div>You have saved {userData.savedRecipes} recipes!</div>
-            <div>You have created {userData.createdRecipes} recipes!</div>
+            <div class="userName">Username: {userData.userName}</div>
+            <div class="email">Email: {userData.email}</div>
+            <div class="collection">You have saved {userData.savedRecipes} recipes!</div>
+            <div class="creation">You have created {userData.createdRecipes} recipes!</div>
             <button onClick={() => handleDeleteUser(userData.userId)}>Delete User</button>
         </div>
         </>
