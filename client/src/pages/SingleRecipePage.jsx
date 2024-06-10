@@ -17,6 +17,11 @@ export default function SingleRecipe() {
     const toggleForm = () => {
         setShowForm(!showForm);
     };
+    useEffect(() => {
+        if (params) {
+            lookUpRecipe()
+        }
+    }, [params])
 
     function lookUpRecipe() {
         fetch(`/api/recipes/${params.recipeId}`)
@@ -41,7 +46,7 @@ export default function SingleRecipe() {
     }
 
 
-    const postReview = async (event, params.recipeId) => {
+    const postReview = async (event, params) => {
         event.preventDefault(); // Prevents the default form submission behavior
     
         try {
@@ -95,11 +100,6 @@ export default function SingleRecipe() {
             });
     }
 
-    useEffect(() => {
-        if (params) {
-            lookUpRecipe()
-        }
-    }, [params])
 
     if (!recipe) return <></>
     return (
