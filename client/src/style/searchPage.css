@@ -8,7 +8,20 @@
 }
 
 .singleRecipePage h1 {
-    margin-bottom: 0;
+    margin: 20px auto 0 auto;
+}
+
+.h3Save {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.saveButton {
+    margin-left: 20px;
+    height: 2.5rem;
+    font-size: 1rem;
+    padding: 0 20px;
 }
 
 .singleImageSrc {

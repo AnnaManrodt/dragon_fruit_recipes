@@ -3,6 +3,7 @@ const router = require("express").Router();
 const {
   getRecipe,
   getRecipes,
+  saveRecipe,
   databaseRecipes,
   getByCategory
 } = require("../../controllers/recipe-controllers");
@@ -29,8 +30,8 @@ router
 router
   .route("/:recipeId")
   .get(getRecipe)
+  .post(saveRecipe)
   
-
 // All reviews for recipe route
 router
   .route("/:recipeId/reviews")
@@ -43,7 +44,6 @@ router
   .get(getReview)
   .put(updateReview)
   .delete(deleteReview);
-
 
 // Invalid route
 router.use((req, res) => res.send("Invalid Route"));

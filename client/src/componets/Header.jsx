@@ -29,7 +29,7 @@ export default function Header() {
             <div className="navlinks">
               <NavLink to="/">   Home   </NavLink>
               <span>|</span>
-              <NavLink to="/search">   Search Recipes  </NavLink>
+              <NavLink to="/recipes">   Search Recipes  </NavLink>
             </div>
           </>
           ) : (
@@ -43,7 +43,7 @@ export default function Header() {
               <div className="navlinks">
               <NavLink to="/">   Home   </NavLink>
               <span>|</span>
-              <NavLink to="/search">   Search Recipes  </NavLink>
+              <NavLink to="/recipes">   Search Recipes  </NavLink>
               <span>|</span>
               <NavLink to="/create">   Create Recipes   </NavLink>
               </div>
