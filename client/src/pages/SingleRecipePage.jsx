@@ -39,9 +39,10 @@ export default function SingleRecipe() {
     }
 
 
-        const postReview = async () => {
+        const postReview = async (event) => {
+            event.preventDefault();
         try {
-            const response = await fetch(`/api/recipes/${params.recipeId}`, {
+            const response = await fetch(`/api/recipes/${params.recipeId}/review`, {
                 method: 'POST',
                 body: JSON.stringify({
                     comments: formData.comments
