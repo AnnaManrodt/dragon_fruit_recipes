@@ -112,8 +112,21 @@ module.exports = {
 
   // Delete created recipe
   async deleteCreatedRecipe(req, res) {
+    console.log(req.params)
     try {
-      const recipe = await Recipe.findOneAndDelete({ _id: req.params.createdId });
+      const user = await User.findOneAndUpdate(
+        { _id: req.params.userId },
+        { $pull: { createdRecipes: req.params.createdId } },
+        { runValidators: true, new: true }
+      );
+      if (!user) {
+        return res.status(404).json({ msg: "No recipe found with that ID" });
+      };
+      const recipe = await Recipe.findOneAndDelete(
+        { _id: req.params.createdId },
+        { $pull: { createdRecipes: req.params.createdId } },
+        { runValidators: true, new: true }
+      );
       if (!recipe) {
         return res.status(404).json({ msg: "No recipe found with that ID" });
       };

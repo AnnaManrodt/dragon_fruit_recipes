@@ -10,8 +10,6 @@ export default function UserInfoPage() {
     const {currentUser} = useAppContext()
     let sendArr = {};
 
-    console.log(currentUser)
-
     function getData(e){
         e.preventDefault();
         if(updateUserName !== ""){
@@ -55,6 +53,7 @@ export default function UserInfoPage() {
         .catch(error => console.error('Error deleting user:', error));
     };
 
+    console.log(currentUser)
     if(!currentUser) return <></>
     return (
         <>

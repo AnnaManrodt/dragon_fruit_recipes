@@ -1,51 +1,77 @@
-import React, { useState, useEffect, useLocation } from "react";
-// import { NavLink } from 'react-router-dom';
-// import UserNav from '../componets/UserPageNav'
-// import axios from "axios";
-// import '../style/viewsaved.css'
-// import RecipeCard from "../componets/RecipeCard";
-// import { useAppContext } from "../providers/AppProvider";
+import React, {useState, useEffect} from "react";
+import {NavLink} from "react-router-dom";
+import UserNav from '../componets/UserPageNav'
+import { useAppContext } from "../providers/AppProvider";
+import axios from "axios";
+import "../style/viewsaved.css";
 
 
 export default function ViewSavedRecipe() {
 
-    // const [recipes, setRecipes] = useState([]); // Initialize recipes as an empty array
-    // const { currentUser } = useAppContext()
+    const {currentUser} = useAppContext()
+    const [recipe, setRecipe] = useState([]);
+    const [errorMessage, setErrorMessage] = useState('');
+    const [forceUpdate, setForceUpdate] = useState(false);
 
-    // useEffect(() => {
-    //     const fetchSavedRecipes = async () => {
-    //         try {
-    //             const response = await axios.get(`/${userData._id}/saved`);
-    //             setRecipes(response.data);
-    //         } catch (error) {
-    //             console.log('error fetching recipes', error);
-    //         }
-    //     };
-    //     fetchSavedRecipes();
-    // }, []);
+    async function getRecipe() {
+        try {
+            const response = await axios(`/api/users/${currentUser._id}/saved`);
+            setRecipe(response.data[0].savedRecipes);
+        } catch (error) {
+            console.log(error);
+        }
+    }
 
+    const handleDeleteSave = (i) => {
+        fetch(`/api/users/${currentUser._id}/saved/${i}`, {
+            method: 'DELETE',
+        })
+        .then(response => {
+            if (response.ok) {
+                setForceUpdate(prevState => !prevState);
+            } else {
+                console.log('Error deleting user');
+            }
+        })
+        .catch(error => console.error('Error deleting user:', error));
+    };
 
+    useEffect(() => {
+        if (currentUser) {
+            getRecipe();
+        }
+    }, [currentUser, forceUpdate]);
+
+    if(!currentUser) return <></>
     return (
         <>
-            {/* <UserNav />
+            <UserNav />
             <h3>Saved Recipes</h3>
-
             <div className="recipe-card-container">
-                <RecipeCard />
-                <RecipeCard />
-                <RecipeCard />
-                <RecipeCard />
+                <div>
+                    <div>
+                    <div className="bodyWidth">
+                        {recipe.length > 0 ? (
+                            recipe?.map((rec, i) => (
+                                <div className="allRecipeCard" key={i}>
+                                    <NavLink to={`/recipes/${rec._id}`}>
+                                        <h2 id="unSaveH2">{rec.title}</h2>
+                                        <img src={rec.picture} alt="random recipe" className="recipeImageReSize unSaveImg" />
+                                    </NavLink>
+                                    <div className="unSave">
+                                        <h3>{rec.category}</h3>
+                                        <button className="unSaveBtn" onClick={() => handleDeleteSave(rec._id)}>Remove Save</button>
+                                    </div>
+                                </div>
+                            ))
+                        ) : (
+                            <p>Loading...</p>
+                        )}
+                        {errorMessage && <p>{errorMessage}</p>}
+                        </div>
+                    </div>
+                </div>
             </div>
-            <>
-
-                <ul>
-                    {response.map(response => (
-                        <li key={recipes._id}>{recipes.title}
-                            <button>Save recipe</button></li>
-                    ))}
-                </ul>
-            </> */}
         </>
     )
-
 }
