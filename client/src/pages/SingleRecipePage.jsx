@@ -11,7 +11,9 @@ export default function SingleRecipe() {
     const [submitMessage, setSubmitMessage] = useState("");
     const [errorMessage, setErrorMessage] = useState('');
     const [showForm, setShowForm] = useState(false);
-    const [formData, setFormData] = useState()
+    const [formData, setFormData] = useState({
+        comments : ""
+    })
     const toggleForm = () => {
         setShowForm(!showForm);
     };
@@ -31,7 +33,7 @@ export default function SingleRecipe() {
     
 
     function handleInputChange(event) {
-        setMessage("")
+
         setFormData({
             ...formData,
             [event.target.name]: event.target.value
@@ -65,9 +67,7 @@ export default function SingleRecipe() {
     };
 
     function saveRecipeToUser() {
-        fetch(`/api/recipes/${params.recipeId}`, {
-            method: "POST",
-            body: JSON.stringify({ _id: currentUser._id }),
+        fetch(`/api/recipes/${params.recipeId}`, {  body: JSON.stringify({ _id: currentUser._id }),
             headers: {
                 "Content-Type": "application/json"
             }
@@ -118,9 +118,10 @@ export default function SingleRecipe() {
                 {showForm && (
                     <form>
                         <label>Comment
-                            <textarea type="text"/>
+                            <textarea type="text" alue={formData.comments}   onChange={handleInputChange}/>
                             {/*  value={formData.comments}   onChange={handleInputChange}/ */}
                         </label>
+                        
                         <button onClick={postReview}>Save Review</button>
                     </form>
                 )}
