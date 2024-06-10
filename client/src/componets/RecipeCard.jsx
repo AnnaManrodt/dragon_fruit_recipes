@@ -19,12 +19,13 @@ export default function RecipeCard() {
             });
     }, []);
 
+    if( !recipe ) return <></>
     return (
         <div className="randomRecipeCard">
             {recipe ? (
                 <NavLink to={`/recipes/${recipe._id}`}> 
                 <h2>{recipe.title}</h2>
-                <img src="https://www.themealdb.com/images/media/meals/xqwwpy1483908697.jpg" alt="random recipe" className="recipeImageReSize"/>
+                <img src={recipe.picture} alt="random recipe" className="recipeImageReSize"/>
                 </NavLink>
             ) : (
                 <p>Loading...</p>
