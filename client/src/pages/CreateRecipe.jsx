@@ -1,5 +1,4 @@
 import { useState, useEffect, useLocation } from "react"
-import { useNavigate, NavLink } from 'react-router-dom';
 import { useAppContext } from "../providers/AppProvider";
 import AddFormFields from "../componets/AddFormFields";
 import '../style/createRecipe.css'
@@ -24,7 +23,6 @@ export default function CreateRecipe() {
         });
     };
 
-
     const handleSubmit = async (e) => {
         e.preventDefault();
 
@@ -40,7 +38,6 @@ export default function CreateRecipe() {
                 // Handle successful form submission
                 console.log(response)
                 console.log('Form data submitted successfully');
-                //history.push('/my-new-page');
             } else {
                 // Handle errors if submission fails
                 console.error('Form data submission failed');
@@ -54,7 +51,6 @@ export default function CreateRecipe() {
         event.preventDefault();
         setInputIngredient([...inputIngredient, <AddFormFields key={inputIngredient.length} />]);
     }
-
 
     return (
         <>
