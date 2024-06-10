@@ -10,8 +10,6 @@ export default function UserInfoPage() {
     const {currentUser} = useAppContext()
     let sendArr = {};
 
-    console.log(currentUser)
-
     function getData(e){
         e.preventDefault();
         if(updateUserName !== ""){
