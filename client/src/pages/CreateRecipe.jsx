@@ -1,9 +1,11 @@
-import { useState, useEffect, useLocation } from "react"
+import { useState } from "react"
 import { useAppContext } from "../providers/AppProvider";
-import AddFormFields from "../componets/AddFormFields";
 import '../style/createRecipe.css'
 
 export default function CreateRecipe() {
+
+    const [message, setMessage] = useState("");
+    const [errorMessage, setErrorMessage] = useState('');
 
     const { currentUser } = useAppContext()
     const [inputIngredient, setInputIngredient] = useState([]);
@@ -17,11 +19,19 @@ export default function CreateRecipe() {
     });
 
     const handleChange = (e, fieldName) => {
-        setFormData({
-            ...formData,
-            [fieldName]: e.target.value,
-        });
+            setFormData({
+                ...formData,
+                [fieldName]: e.target.value,
+            });
     };
+
+    const handleIngredientChange = (e, fieldName, index) => {
+        console.log("Ingredient change", e.target.value);
+        console.log("Ingredient change", fieldName);
+        setFormData({
+            ...formData});
+        formData[fieldName][index] = e.target.value;
+    }
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -35,22 +45,33 @@ export default function CreateRecipe() {
                 body: JSON.stringify(formData)
             });
             if (response.ok) {
+                const result = await response.json();
                 // Handle successful form submission
-                console.log(response)
+                setMessage("Recipe created successfully!");
+                //console.log("Result is", result);
                 console.log('Form data submitted successfully');
+                window.location.href = "/user/created";
+                //history.push('/my-new-page');
             } else {
+                const result = await response.json();
                 // Handle errors if submission fails
+                setErrorMessage("Failed to create recipe: " + result.msg);
                 console.error('Form data submission failed');
             }
         } catch (error) {
+            setErrorMessage("Failed to create recipe: " + error);
             console.error('An error occurred while submitting form data:', error);
         }
     };
 
     const addFields = (event) => {
-        event.preventDefault();
-        setInputIngredient([...inputIngredient, <AddFormFields key={inputIngredient.length} />]);
+         event.preventDefault();
+         formData.ingredients.push('');
+         formData.measurements.push('');
+            setFormData({
+                ...formData});
     }
+
 
     return (
         <>
@@ -61,12 +82,13 @@ export default function CreateRecipe() {
                         <div className="top-row">
                             <label htmlFor="title">Recipe Title: </label>
                             <br/>
-                            <input type="text" placeholder="Please type Dish title" value={formData.title} onChange={(e) => handleChange(e, 'title')} />
+                            <input required type="text" placeholder="Please type Dish title" value={formData.title} onChange={(e) => handleChange(e, 'title')} />
                         </div>
                         <div className="top-row">
                             <label htmlFor="dropdown-basic-button">Category: </label>
                             <br/>
-                            <select id="dropdown-basic-button" title="Select Category" value={formData.category} onChange={(e) => handleChange(e, 'category')} >
+                            <select required id="dropdown-basic-button" title="Select Category" value={formData.category} onChange={(e) => handleChange(e, 'category')} >
+                                <option value=""></option>
                                 <option value="Beef">Beef</option>
                                 <option value="Breakfast">Breakfast</option>
                                 <option value="Chicken">Chicken</option>
@@ -85,18 +107,29 @@ export default function CreateRecipe() {
                         <div className="top-row">
                             <label htmlFor="instructions">Instructions: </label>
                             <br/>
-                            <textarea type="text" id="instructions" placeholder="Please enter Instructions" value={formData.instructions} onChange={(e) => handleChange(e, 'instructions')}  />
+                            <textarea required type="text" id="instructions" rows="15" placeholder="Please enter Instructions" value={formData.instructions} onChange={(e) => handleChange(e, 'instructions')}  />
                         </div>
                     </div>
                     <div className="ingredientList">
-                        <div className="rowStyling">
-                            {inputIngredient}
-                        </div>
+                        {formData.ingredients.map((ingredient, index) => (
+                        <div className="rowStyling" key={index}>
+                            <label htmlFor="ingredients">Ingredient: </label>
+                            <input type="text" className="amFormInput" placeholder="Add Ingredient" value={ingredient.name} onChange={(e) => handleIngredientChange(e, 'ingredients', index)}  />
+
+                            <label htmlFor="measurements">Measurement: </label>
+                            <input type="text" className="amFormInput" placeholder="Add Measurement" value={ingredient.measurement} onChange={(e) => handleIngredientChange(e, 'measurements', index)}/>
+                        </div>))}
                     </div>
                     <button onClick={addFields} className="addIngredientButton">Add Another Ingredient</button>
                     <br/>
                     <button type="submit" value="Submit">Submit Recipe</button>
                 </form>
+            </div>
+            <div className="errorMessageLogin info">
+                {message && (<p>{message}</p>)}
+            </div>
+            <div className="errorMessageLogin danger">
+                {errorMessage && (<p>{errorMessage}</p>)}
             </div>
         </>
     )
