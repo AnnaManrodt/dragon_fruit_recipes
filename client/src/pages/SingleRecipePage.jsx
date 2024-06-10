@@ -41,28 +41,34 @@ export default function SingleRecipe() {
     }
 
 
-        const postReview = async (event) => {
-            event.preventDefault();
+    const postReview = async (event, params.recipeId) => {
+        event.preventDefault(); // Prevents the default form submission behavior
+    
         try {
             const response = await fetch(`/api/recipes/${params.recipeId}/review`, {
-                method: 'POST',
-                body: JSON.stringify({
-                    comments: formData.comments
+                method: 'POST', // Specifies that this is a POST request
+                body: JSON.stringify({ // Converts the data to JSON format for the request body
+                    comments: formData.comments // Adds the comments from the form data to the request body
                 }),
                 headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(formData)
+                    'Content-Type': 'application/json' // Specifies that the content type is JSON
+                }
             });
-
-            if (response.ok) {
-                const responseData = await response.json();
-                console.log('Response from server:', responseData);
+    
+            if (response.ok) { // Checks if the response status is in the range 200-299
+                const contentType = response.headers.get('content-type');
+                if (contentType && contentType.includes('application/json')) {
+                    const responseData = await response.json(); // Parses the response data as JSON
+                    console.log('Response from server:', responseData); // Logs the response data to the console
+                } else {
+                    const textData = await response.text(); // Get the response as text
+                    console.error('Non-JSON response:', textData); // Log the non-JSON response
+                }
             } else {
-                console.error('Failed to submit form data');
+                console.error('Failed to submit form data'); // Logs an error message if the response is not ok
             }
         } catch (error) {
-            console.error('An error occurred while submitting form data:', error);
+            console.error('An error occurred while submitting form data:', error); // Logs any errors that occur during the request
         }
     };
 
