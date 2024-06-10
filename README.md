@@ -23,6 +23,18 @@
    From the home page, navigate to the sign up/login page then sign up and then log in with that same sign up info. Navigate to different pages including the recipe search page, the create recipe page, the user's page, the user's information page, the user's saved recipes, and the user's created recipes.
 
    https://dragon-fruit-recipes.onrender.com/
+
+   ![Login](./client/public/assets/login.png)
+
+   ![User](./client/public/assets/user.png)
+
+   ![User Info](./client/public/assets/userinfo.png)
+
+   ![Create](./client/public/assets/create.png)
+
+   ![Search](./client/public/assets/search.png)
+
+   ![Single Recipe](./client/public/assets/single.png)
    
    ## License
    
@@ -35,11 +47,12 @@
    ## Questions
 
    For any additional questions, please contact the creators:
-   github.com/AnnaManrodt
-   github.com/TyWalter
-   github.com/GwiyomiAmy
-   github.com/Kylebutcher
-   github.com/ozgeahunbay
+   https://github.com/AnnaManrodt
+   https://github.com/TyWalter
+   https://github.com/GwiyomiAmy
+   https://github.com/Kylebutcher
+   https://github.com/ozgeahunbay
+
 
    
    
