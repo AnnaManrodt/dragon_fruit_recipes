@@ -53,6 +53,7 @@ export default function UserInfoPage() {
         .catch(error => console.error('Error deleting user:', error));
     };
 
+    console.log(currentUser)
     if(!currentUser) return <></>
     return (
         <>

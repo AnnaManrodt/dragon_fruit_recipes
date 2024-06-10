@@ -16,7 +16,8 @@ export default function ViewCreatedRecipe() {
   async function getRecipe() {
     try {
       const response = await axios(`/api/users/${currentUser._id}/created`);
-      setRecipe(response.data[0].createdRecipes);
+      console.log(response.data.createdRecipes)
+      setRecipe(response.data.createdRecipes);
     } catch (error) {
       console.log(error);
     }
