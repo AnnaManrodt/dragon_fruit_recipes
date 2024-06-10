@@ -73,7 +73,9 @@ export default function SingleRecipe() {
     };
 
     function saveRecipeToUser() {
-        fetch(`/api/recipes/${params.recipeId}`, {  body: JSON.stringify({ _id: currentUser._id }),
+        fetch(`/api/recipes/${params.recipeId}`, {
+            method: 'POST',
+            body: JSON.stringify({ _id: currentUser._id }),
             headers: {
                 "Content-Type": "application/json"
             }
