@@ -46,11 +46,11 @@ export default function SingleRecipe() {
     }
 
 
-    const postReview = async (event, params) => {
+    const postReview = async (event) => {
         event.preventDefault(); // Prevents the default form submission behavior
     
         try {
-            const response = await fetch(`/api/recipes/${params.recipeId}/review`, {
+            const response = await fetch(`/api/recipes/${params.recipeId}/reviews`, {
                 method: 'POST', // Specifies that this is a POST request
                 body: JSON.stringify({ // Converts the data to JSON format for the request body
                     comments: formData.comments // Adds the comments from the form data to the request body
@@ -126,7 +126,7 @@ export default function SingleRecipe() {
                 {showForm && (
                     <form>
                         <label>Comment
-                            <textarea type="text" alue={formData.comments}   onChange={handleInputChange}/>
+                            <textarea type="text"  name="comments" value={formData.comments}   onChange={handleInputChange}/>
                             {/*  value={formData.comments}   onChange={handleInputChange}/ */}
                         </label>
                         
