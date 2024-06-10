@@ -3,11 +3,21 @@
   border-radius: 15px;
   display: flex;
   flex-direction: column;
-  align-items: start;
+  align-items: center;
   padding: 10px;
   margin: 5px;
 }
 
 .margin {
   margin: 5px;
+}
+
+.needHover {
+  cursor: pointer;
+  font-weight: 500;
+  color: #94a033;
+  text-decoration: inherit;
+  &:hover {
+    color: #b10d52;
+  }
 }

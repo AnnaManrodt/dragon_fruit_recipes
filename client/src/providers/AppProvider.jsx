@@ -22,7 +22,7 @@ export default function AppProvider(props){
   },[])
 
   return(
-    <AppContext.Provider value={{ currentUser }}>
+    <AppContext.Provider value={{ currentUser, setCurrentUser }}>
       { props.children }
     </AppContext.Provider>
   )

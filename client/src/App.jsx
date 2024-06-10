@@ -4,7 +4,6 @@ import AppProvider from './providers/AppProvider'
 import HomePage from './pages/HomePage';
 import LoginSignup from './pages/LoginSignupPage';
 import RecipeSearch from './pages/RecipeSearchPage';
-import SearchResults from './pages/SearchResult';
 import SingleRecipe from './pages/SingleRecipePage';
 import CreateRecipe from './pages/CreateRecipe';
 import UserInfo from './pages/UserPage';
@@ -23,10 +22,8 @@ function App() {
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/login" element={<LoginSignup />} />
-            <Route path="/search" element={<RecipeSearch />} />
-            <Route path="/search/results" element={<SearchResults/>} />
-            <Route path="/recipe" element={<SingleRecipe />} />
-            <Route path="/recipe/:recipeId" element={<SingleRecipe />} />
+            <Route path="/recipes" element={<RecipeSearch />} />
+            <Route path="/recipes/:recipeId" element={<SingleRecipe />} />
             <Route path="/create" element={<CreateRecipe />} />
             <Route path="/user" element={<UserInfo />} />
             <Route path="/user/userinfo" element={<UserInfoPage />} />

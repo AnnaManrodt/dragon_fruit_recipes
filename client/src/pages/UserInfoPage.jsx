@@ -1,56 +1,87 @@
-import React, { useState, useEffect } from "react";
-import { useNavigate } from 'react-router-dom';
+import { useState } from "react";
 import "../style/userInfo.css"
 import UserNav from '../componets/UserPageNav'
 import { useAppContext } from "../providers/AppProvider";
 
 export default function UserInfoPage() {
-    const navigateTo = useNavigate();
-    const [userData, setUserData] = useState({});
-
+    const [update, setUpdate] = useState("")
+    const [updateUserName, setUpdateUserName] = useState("")
+    const [updateEmail, setUpdateEmail] = useState("")
     const {currentUser} = useAppContext()
+    let sendArr = {};
 
-    useEffect(() => {
-            fetch(`api/users/${userData._id}`)
-                .then(response => response.json())
-                .then(data => setUserData(data));
-        
-    }, []);
     console.log(currentUser)
 
-useEffect(()=>{
-currentUser && setUserData(currentUser)
-}, [currentUser])
+    function getData(e){
+        e.preventDefault();
+        if(updateUserName !== ""){
+            sendArr.username = updateUserName
+        }
+        if(updateEmail !== ""){
+            sendArr.email = updateEmail
+        }
+        fetch(`/api/users/${currentUser._id}`, {
+            method: "PUT",
+            body: JSON.stringify(sendArr),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(response => response.json())
+        .then(resp => {
+            if(resp.username !== currentUser.username) {
+                setUpdate("You have successfully updated your profile");
+            } else if(resp.email !== currentUser.email) {
+                setUpdate("You have successfully updated your profile");
+            }
+        })
+        .catch(err => {
+            setUpdate("Could not update your profile with the given information")
+            console.log(err)
+        });
+    }
 
-    // const handleDeleteUser = (userId) => {
-    //     fetch(`api/users/${userId}`, {
-    //         method: 'DELETE',
-    //     })
-    //     .then(response => {
-    //         if (response.ok) {
-    //             // Update the UI or navigate to a different page after deletion
-    //             navigateTo.push('/'); // Redirect to the homepage
-    //         } else {
-    //             console.log('Error deleting user');
-    //         }
-    //     })
-    //     .catch(error => console.error('Error deleting user:', error));
-    // };
+    const handleDeleteUser = () => {
+        fetch(`/api/users/${currentUser._id}`, {
+            method: 'DELETE',
+        })
+        .then(response => {
+            if (response.ok) {
+                window.location.href = "/";
+            } else {
+                console.log('Error deleting user');
+            }
+        })
+        .catch(error => console.error('Error deleting user:', error));
+    };
 
+    if(!currentUser) return <></>
     return (
         <>
         <UserNav/>
         <div className="amUserInfo">
-            <div>Username: {userData?.username}</div>
+            <div>Username: {currentUser.username}</div>
             <br/>
-            <div>Email: {userData?.email}</div>
+            <div>Email: {currentUser.email}</div>
             <br/>
-            {/* <div>You have saved {userData?.savedRecipes} recipes!</div>
+            <div>You have saved {currentUser.savedRecipes.length} recipes!</div>
             <br/>
-            <div>You have created {userData?.createdRecipes} recipes!</div>
-            <br/> */}
-            <button className="margin" onClick={() => handleDeleteUser(userData.userId)}>Delete User</button>
-            <button className="margin">LogOut</button>
+            <div>You have created {currentUser.createdRecipes.length} recipes!</div>
+            <br/>
+            <form onSubmit={getData}>
+                <label htmlFor="nameInput">Username:</label>
+                <input id="nameInput" onChange={e => setUpdateUserName(e.target.value)} value={updateUserName} />
+                <br/>
+                <br/>
+                <label htmlFor="emailInput">Email:</label>
+                <input id="emailInput" onChange={e => setUpdateEmail(e.target.value)} value={updateEmail} />
+                <br/>
+                <br/>
+                <button type="submit">Update User</button>
+            </form>
+            <br/>
+            <div>{update}</div>
+            <button className="margin" onClick={() => handleDeleteUser(currentUser.userId)}>Delete User</button>
         </div>
         </>
     );

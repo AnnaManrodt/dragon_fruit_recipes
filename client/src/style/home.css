@@ -1,15 +1,12 @@
 .recipe-card-container {
    display: flex;
    justify-content: center;
-   flex-wrap: wrap;
 }
 
 .recipe-card {
    border: 2px solid hsl(335, 86%, 37%);
    border-radius: 30px;
-   margin: 10px;
-   padding: 30px;
-   width: 20vw
+   margin: 30px;
 }
 
 .randomRecipeCard {
