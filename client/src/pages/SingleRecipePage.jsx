@@ -44,15 +44,15 @@ export default function SingleRecipe() {
         const postReview = async (event) => {
             event.preventDefault();
         try {
-            const response = await fetch(`/api/recipes/${params.recipeId}/review`, {
+            const response = await fetch(`/api/recipes/${params.recipeId}/reviews`, {
                 method: 'POST',
                 body: JSON.stringify({
-                    comments: formData.comments
+                    comments: formData.comments,
+                    email: currentUser.email
                 }),
                 headers: {
                     'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(formData)
+                }
             });
 
             if (response.ok) {
@@ -67,7 +67,9 @@ export default function SingleRecipe() {
     };
 
     function saveRecipeToUser() {
-        fetch(`/api/recipes/${params.recipeId}`, {  body: JSON.stringify({ _id: currentUser._id }),
+        fetch(`/api/recipes/${params.recipeId}`, {
+            method: 'POST',
+            body: JSON.stringify({ _id: currentUser._id }),
             headers: {
                 "Content-Type": "application/json"
             }
