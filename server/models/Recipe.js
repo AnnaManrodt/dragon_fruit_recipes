@@ -27,8 +27,7 @@ const recipeSchema = new Schema(
 			required: true
 		},
 		picture: {
-			data: Buffer,
-      contentType: String
+			type: String,
 		},
 		reviews: [{
       type: Schema.Types.ObjectId,
