@@ -56,3 +56,38 @@
     border-radius: 15px;
     padding: 12px;
 }
+
+.reviewForm {
+    display: flexbox;
+    text-align: center;
+    justify-content: center;
+    position: relative;
+}
+
+.reviewForm label {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    margin: 5px auto;
+}
+
+.reviewForm input {
+    position: relative;
+    display: flex;
+    margin: 5px auto;
+    font-size: 2rem;
+    text-align: center;
+}
+
+.reviewForm textarea {
+    position: relative;
+    display: flex;
+    height: 100px;
+    width: 30vw;
+    margin: 5px auto;
+    font-size: 1rem;
+}
+
+.reviewBtn, .reviewForm button {
+    margin-bottom: 10px;
+}
