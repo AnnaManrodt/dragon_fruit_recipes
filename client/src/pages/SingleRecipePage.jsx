@@ -10,18 +10,27 @@ export default function SingleRecipe() {
     const [recipe, setRecipe] = useState();
     const [submitMessage, setSubmitMessage] = useState("");
     const [errorMessage, setErrorMessage] = useState('');
+    const [errorMessageReview, setErrorMessageReview] = useState('');
     const [showForm, setShowForm] = useState(false);
+    const [forceUpdate, setForceUpdate] = useState(false);
     const [formData, setFormData] = useState({
+        rating: "",
         comments : ""
     })
+
     const toggleForm = () => {
-        setShowForm(!showForm);
+        if(currentUser) {
+            setShowForm(!showForm);
+        } else {
+            setErrorMessageReview("You must be logged in to leave a review")
+        }
     };
+
     useEffect(() => {
         if (params) {
             lookUpRecipe()
         }
-    }, [params])
+    }, [params, forceUpdate])
 
     function lookUpRecipe() {
         fetch(`/api/recipes/${params.recipeId}`)
@@ -35,32 +44,34 @@ export default function SingleRecipe() {
             });
     }
 
-    
-
     function handleInputChange(event) {
-
         setFormData({
             ...formData,
             [event.target.name]: event.target.value
         })
     }
 
+    function clearForms() {
+        setFormData({  rating: "", comments : "" })
+    }
 
     const postReview = async (event) => {
         event.preventDefault(); // Prevents the default form submission behavior
-    
         try {
             const response = await fetch(`/api/recipes/${params.recipeId}/reviews`, {
                 method: 'POST', // Specifies that this is a POST request
                 body: JSON.stringify({ // Converts the data to JSON format for the request body
-                    comments: formData.comments // Adds the comments from the form data to the request body
+                    rating: formData.rating,
+                    comments: formData.comments, // Adds the comments from the form data to the request body
+                    email: currentUser.email
                 }),
                 headers: {
                     'Content-Type': 'application/json' // Specifies that the content type is JSON
                 }
             });
-    
             if (response.ok) { // Checks if the response status is in the range 200-299
+                setForceUpdate(prevState => !prevState);
+                clearForms()
                 const contentType = response.headers.get('content-type');
                 if (contentType && contentType.includes('application/json')) {
                     const responseData = await response.json(); // Parses the response data as JSON
@@ -87,7 +98,6 @@ export default function SingleRecipe() {
         })
             .then(response => response.json())
             .then(data => {
-                console.log(data)
                 if (data.msg) {
                     setErrorMessage("Failed to save recipe");
                 } else {
@@ -99,7 +109,6 @@ export default function SingleRecipe() {
                 console.error('Error:', error);
             });
     }
-
 
     if (!recipe) return <></>
     return (
@@ -122,24 +131,24 @@ export default function SingleRecipe() {
                 ))}
             </div>
             <div>
-                <button onClick={toggleForm}>Leave a Review!</button>
+                {recipe.reviews.map((review, index) => (
+                    <div key={index}>
+                        <h3>Rating: {review.rating}</h3>
+                        <h3>Comments: {review.comments}</h3>
+                    </div>
+                ))}
+                <button onClick={toggleForm} className="reviewBtn">Leave a Review!</button>
+                {errorMessageReview}
                 {showForm && (
-                    <form>
-                        <label>Comment
-                            <textarea type="text"  name="comments" value={formData.comments}   onChange={handleInputChange}/>
-                            {/*  value={formData.comments}   onChange={handleInputChange}/ */}
-                        </label>
-                        
+                    <form className="reviewForm">
+                        <label>Rating</label>
+                        <input type="number" min={1} max={5} name="rating" value={formData.rating} onChange={handleInputChange} required/>
+                        <label>Comment</label>
+                        <textarea type="text" name="comments" value={formData.comments} onChange={handleInputChange} required/>
                         <button onClick={postReview}>Save Review</button>
                     </form>
                 )}
             </div>
-            {recipe.reviews.map((review, index) => (
-                <div key={index}>
-                    <h3>Rating: {review.rating}</h3>
-                    <h3>Comments: {review.comments}</h3>
-                </div>
-            ))}
         </div>
     )
 }

@@ -26,8 +26,6 @@ export default function CreateRecipe() {
     };
 
     const handleIngredientChange = (e, fieldName, index) => {
-        console.log("Ingredient change", e.target.value);
-        console.log("Ingredient change", fieldName);
         setFormData({
             ...formData});
         formData[fieldName][index] = e.target.value;
